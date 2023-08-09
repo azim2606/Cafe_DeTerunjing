@@ -16,7 +16,7 @@ namespace Cafe_DeTerunjing.Pages.Account
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly ILogger<RegisterModel> _logger;
 
-        public RegistrationModel(
+        public RegisterModel(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager, 
             RoleManager<IdentityRole> roleManager,
@@ -36,8 +36,31 @@ namespace Cafe_DeTerunjing.Pages.Account
         {
             if(ModelState.IsValid)
             {
-                Task
+                Task<bool> hasRegUserRole = _roleManager.RoleExistsAsync("Admin");
+                hasRegUserRole.Wait();
+
+                if(!hasRegUserRole.Result)
+                {
+                    var roleResult = _roleManager.CreateAsync(new IdentityRole("Admin"));
+                    roleResult.Wait();
+                }
+                var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email };
+                var result = await _userInManager.CreateAsync(user,Input.Password);
+                if(result.Succeeded)
+                {
+                    await _signInManager.SignInAsync(user, isPersistent: false);
+                    Task<IdentityResult> newUserRole = _userInManager.AddToRoleAsync(user, "Admin");
+                    newUserRole.Wait();
+
+                    await _db.SaveChangesAsync();
+                    return RedirectToAction("Index");
+                }
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
             }
+            return Page();
         }
 
 

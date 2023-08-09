@@ -1,6 +1,8 @@
-﻿namespace Cafe_DeTerunjing.Data
+﻿using Microsoft.AspNetCore.Identity;
+
+namespace Cafe_DeTerunjing.Data
 {
-    public class ApplicationUser
+    public class ApplicationUser : IdentityUser
     {
     }
 }
