@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Cafe_DeTerunjing.Pages.Account
 {
-    public class RegisterModel : PageModel
+    public class Register : PageModel
     {
         [BindProperty]
         public Registration Input { get; set; }
@@ -14,13 +14,13 @@ namespace Cafe_DeTerunjing.Pages.Account
         private readonly UserManager<ApplicationUser> _userInManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly RoleManager<IdentityRole> _roleManager;
-        private readonly ILogger<RegisterModel> _logger;
+        private readonly ILogger<Register> _logger;
 
-        public RegisterModel(
+        public Register(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager, 
             RoleManager<IdentityRole> roleManager,
-            ILogger<RegisterModel> logger,
+            ILogger<Register> logger,
             Cafe_DeTerunjingContext db)
 
         {
@@ -36,12 +36,12 @@ namespace Cafe_DeTerunjing.Pages.Account
         {
             if(ModelState.IsValid)
             {
-                Task<bool> hasRegUserRole = _roleManager.RoleExistsAsync("Admin");
+                Task<bool> hasRegUserRole = _roleManager.RoleExistsAsync("RegUser");
                 hasRegUserRole.Wait();
 
                 if(!hasRegUserRole.Result)
                 {
-                    var roleResult = _roleManager.CreateAsync(new IdentityRole("Admin"));
+                    var roleResult = _roleManager.CreateAsync(new IdentityRole("RegUser"));
                     roleResult.Wait();
                 }
                 var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email };
@@ -49,7 +49,7 @@ namespace Cafe_DeTerunjing.Pages.Account
                 if(result.Succeeded)
                 {
                     await _signInManager.SignInAsync(user, isPersistent: false);
-                    Task<IdentityResult> newUserRole = _userInManager.AddToRoleAsync(user, "Admin");
+                    Task<IdentityResult> newUserRole = _userInManager.AddToRoleAsync(user, "RegUser");
                     newUserRole.Wait();
 
                     await _db.SaveChangesAsync();

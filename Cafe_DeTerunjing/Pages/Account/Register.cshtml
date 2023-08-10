@@ -1,5 +1,5 @@
 ﻿@page
-@model Cafe_DeTerunjing.Pages.Account.RegisterModel
+@model Cafe_DeTerunjing.Pages.Account.Register
 @{
 
 }
@@ -10,9 +10,9 @@
     <div asp-validation-summary="All"></div>
 
     <div>
-        <label asp-for="Input.Password"></label>
-        <input asp-for="Input.Password" class="form-control"/>
-        <span asp-validation-for="Input.Password"></span>
+        <label asp-for="Input.Email"></label>
+        <input asp-for="Input.Email" class="form-control"/>
+        <span asp-validation-for="Input.Email"></span>
     </div>
 
     <div>
@@ -26,7 +26,7 @@
         <input asp-for="Input.ConfirmPassword" class="form-control" />
         <span asp-validation-for="Input.ConfirmPassword"></span>
     </div>
-
+    <button type="submit">Register</button>
 </form>
 
 
