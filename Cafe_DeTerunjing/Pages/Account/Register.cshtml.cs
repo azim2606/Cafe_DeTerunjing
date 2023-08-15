@@ -36,12 +36,12 @@ namespace Cafe_DeTerunjing.Pages.Account
         {
             if(ModelState.IsValid)
             {
-                Task<bool> hasRegUserRole = _roleManager.RoleExistsAsync("RegUser");
+                Task<bool> hasRegUserRole = _roleManager.RoleExistsAsync("Admin");
                 hasRegUserRole.Wait();
 
                 if(!hasRegUserRole.Result)
                 {
-                    var roleResult = _roleManager.CreateAsync(new IdentityRole("RegUser"));
+                    var roleResult = _roleManager.CreateAsync(new IdentityRole("Admin"));
                     roleResult.Wait();
                 }
                 var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email };
@@ -49,7 +49,7 @@ namespace Cafe_DeTerunjing.Pages.Account
                 if(result.Succeeded)
                 {
                     await _signInManager.SignInAsync(user, isPersistent: false);
-                    Task<IdentityResult> newUserRole = _userInManager.AddToRoleAsync(user, "RegUser");
+                    Task<IdentityResult> newUserRole = _userInManager.AddToRoleAsync(user, "Admin");
                     newUserRole.Wait();
 
                     await _db.SaveChangesAsync();

@@ -27,7 +27,7 @@ builder.Services.ConfigureApplicationCookie(option =>
 builder.Services.AddAuthorization(option =>
 {
     option.AddPolicy("AdminPolicy",
-        policy => policy.RequireRole("RegUser"));
+        policy => policy.RequireRole("Admin"));
 }); 
 
 builder.Services.AddRazorPages(options =>
