@@ -28,7 +28,7 @@ builder.Services.AddAuthorization(option =>
 {
     option.AddPolicy("AdminPolicy",
         policy => policy.RequireRole("RegUser"));
-});
+}); 
 
 builder.Services.AddRazorPages(options =>
 {

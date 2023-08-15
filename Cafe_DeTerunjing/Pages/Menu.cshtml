@@ -3,3 +3,53 @@
 @{
     ViewData["Title"] = "Menu";
 }
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.MenuS[0].Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MenuS[0].Date)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MenuS[0].Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MenuS[0].Price)
+            </th>
+            <th>Image</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.MenuS)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Date)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                @{
+                    var imagePath = @"images\" + item.ID + ".jpg";
+
+                }
+                <td>
+                    <img src="@imagePath">
+                </td>
+
+
+                <td>
+                    <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
+                </td>
+            </tr>
+        }
+    </tbody>
+    </table>
