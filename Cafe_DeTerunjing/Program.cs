@@ -14,6 +14,28 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
  .AddEntityFrameworkStores<Cafe_DeTerunjingContext>()
  .AddRoles<IdentityRole>()
  .AddDefaultTokenProviders();
+
+builder.Services.ConfigureApplicationCookie(option =>
+{
+    option.LoginPath = new PathString("/Account/Login");
+    option.AccessDeniedPath = new PathString("/Account/AccessDenied");
+    option.LogoutPath = new PathString("/Index");
+}
+    );
+
+//define the admin policy
+builder.Services.AddAuthorization(option =>
+{
+    option.AddPolicy("AdminPolicy",
+        policy => policy.RequireRole("RegUser"));
+});
+
+builder.Services.AddRazorPages(options =>
+{
+    options.Conventions.AuthorizeFolder("/MenuModel", "AdminPolicy");
+});
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -28,7 +50,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapRazorPages();
