@@ -49,6 +49,10 @@ section {
     text-transform: uppercase;
 }
 
+#grid {
+    height: 85px;
+
+}
 
 .btn {
     margin-top: 1rem;
